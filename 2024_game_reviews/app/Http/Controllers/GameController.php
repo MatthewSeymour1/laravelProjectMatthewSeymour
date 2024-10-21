@@ -12,7 +12,8 @@ class GameController extends Controller
      */
     public function index()
     {
-        //
+        $games = Game::all();
+        return view('games.index', compact('games'));
     }
 
     /**
@@ -36,7 +37,7 @@ class GameController extends Controller
      */
     public function show(Game $game)
     {
-        //
+        return view('games.show')->with('game', $game);
     }
 
     /**
