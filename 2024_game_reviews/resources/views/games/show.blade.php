@@ -15,6 +15,7 @@
                                 :image="$game->image"
                                 :release_year="$game->release_year"
                                 :description="$game->description"
+                                :genre="$game->genre"
                             />
                 </div>
             </div>

@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Game;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+
 
 class GameController extends Controller
 {
@@ -21,7 +23,7 @@ class GameController extends Controller
      */
     public function create()
     {
-        //
+        return view('games.create');
     }
 
     /**
@@ -29,7 +31,34 @@ class GameController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // Validate input
+        $request->validate([
+            'title' => 'required',
+            'description' => 'required|max:500',
+            'genre' => 'required',
+            'year' => 'required|integer',
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+        ]);
+
+        // Check if the image is uploaded and handle it
+        if ($request->hasFile('image')) {
+
+            $imageName = time().'.'.$request->image->extension();
+            // Not sure if I need this because I don't use the public/images folder I use web urls as links to the image online.
+            // $request->image->move(public_path('images/games'), $imageName);
+        }
+
+        Game::create([
+            'title' => $request->title,
+            'description' => $request->description,
+            'release_year' => $request->release_year,
+            'genre' => $request->genre,
+            'image' => $image,
+            'created_at' => now(),
+            'updated_at' => now()
+        ]);
+
+        return to_route('games.index')->with('success', 'Game created successfully!');
     }
 
     /**
