@@ -37,7 +37,14 @@ class GameController extends Controller
             'description' => 'required|max:500',
             'genre' => 'required',
             'year' => 'required|integer',
-            'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
+
+            // 'image' =>  'file|mimes:jpg,jpeg,png,gif|max:1024'
+            // I looked up the error I was getting and it said to change the image validation to this.
+            // Now I get this error:
+            // The image field must be a file of type: jpg, jpeg, png, gif.
+            // I also added webp as an option in the validations
+            // Now there is no error but it does not add a new game and it doesn't send me to games.index which it should do after it makes a game. It appears that when I click the "Add Game" button it refreshes the image input secion so that the form is the same but as if you haven't added an image yet.
         ]);
 
         // Check if the image is uploaded and handle it
@@ -45,7 +52,7 @@ class GameController extends Controller
 
             $imageName = time().'.'.$request->image->extension();
             // Not sure if I need this because I don't use the public/images folder I use web urls as links to the image online.
-            // $request->image->move(public_path('images/games'), $imageName);
+            $request->image->move(public_path('images/games'), $imageName);
         }
 
         Game::create([
