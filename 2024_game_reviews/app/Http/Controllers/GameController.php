@@ -29,49 +29,9 @@ class GameController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    // public function store(Request $request)
-    // {
-    //     // Validate input
-    //     $request->validate([
-    //         'title' => 'required',
-    //         'description' => 'required|max:500',
-    //         'genre' => 'required',
-    //         'year' => 'required|integer',
-    //         'image' => 'required|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
-
-    //         // 'required|image|mimes:jpeg,png,jpg,gif,webp|max:2048'
-    //         // 'image' =>  'file|mimes:jpg,jpeg,png,gif|max:1024'
-    //         // I looked up the error I was getting and it said to change the image validation to this.
-    //         // Now I get this error:
-    //         // The image field must be a file of type: jpg, jpeg, png, gif.
-    //         // I also added webp as an option in the validations
-    //         // Now there is no error but it does not add a new game and it doesn't send me to games.index which it should do after it makes a game. It appears that when I click the "Add Game" button it refreshes the image input secion so that the form is the same but as if you haven't added an image yet.
-    //     ]);
-
-    //     // Check if the image is uploaded and handle it
-    //     if ($request->hasFile('image')) {
-
-    //         $imageName = time().'.'.$request->image->extension();
-    //         // Not sure if I need this because I don't use the public/images folder I use web urls as links to the image online.
-    //         $request->image->move(public_path('images/games'), $imageName);
-    //     }
-
-    //     Game::create([
-    //         'title' => $request->title,
-    //         'description' => $request->description,
-    //         'release_year' => $request->release_year,
-    //         'genre' => $request->genre,
-    //         'image' => $imageName,
-    //         'created_at' => now(),
-    //         'updated_at' => now()
-    //     ]);
-
-    //     return to_route('games.index')->with('success', 'Game created successfully!');
-    // }
 
     public function store(Request $request)
     {
-        //validations 
         $request->validate([
             'title' => 'required',
             'description' => 'required|max:500',
@@ -84,6 +44,9 @@ class GameController extends Controller
             $imageName = time() . '.' . $request->image->extension();
             $request->image->move(public_path('images/games'), $imageName);
         }
+        else {
+            $imageName = null;
+        }
 
         game::create([
             'title' => $request->title,
@@ -93,7 +56,7 @@ class GameController extends Controller
             'image' => $imageName,
         ]);
 
-        return to_route('games.index')->with('success', 'You just added another album!!!');
+        return to_route('games.index')->with('success', 'You just added another game!!!');
     }
 
     /**
@@ -109,7 +72,7 @@ class GameController extends Controller
      */
     public function edit(Game $game)
     {
-        //
+        return view('games.edit', compact('game'));
     }
 
     /**
@@ -117,7 +80,29 @@ class GameController extends Controller
      */
     public function update(Request $request, Game $game)
     {
-        //
+        $request->validate([
+            'title' => 'required',
+            'description' => 'required|max:500',
+            'genre' => 'required|max:100',
+            'release_year' => 'required|integer',
+            'image' => 'sometimes|image|mimes:jpeg,png,gif,avif,jpg,webp|max:2048',
+        ]);
+
+
+        // Josh helped me out a bunch here. My original code didn't have the unlink() part so if a game was created, the path would be recorded as images/games. Which is a problem with out unlink() because when I went to re-set the path it would record it as images/games/images/games.
+        $data = $request->only(['title', 'description', 'genre', 'release_year']);
+        
+        if ($request->hasFile('image')) {
+            if ($game->image && file_exists(public_path($game->image))) {
+                unlink(public_path($game->image));
+            }
+            $imageName = time() . '.' . $request->image->extension();
+            $request->file('image')->move(public_path('images/games'), $imageName);
+            $data['image'] = $imageName;
+        }
+
+        $game->update($data);
+        return redirect()->route('games.index')->with('success', 'Game Updated Successfully');
     }
 
     /**
@@ -125,6 +110,7 @@ class GameController extends Controller
      */
     public function destroy(Game $game)
     {
-        //
+        $game->delete();
+        return redirect()->route('games.index')->with('success', 'Game Deleted Successfully');
     }
 }

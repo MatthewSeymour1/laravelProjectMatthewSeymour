@@ -1,4 +1,4 @@
-@props(['action', 'method'])
+@props(['action', 'method', 'game' => null])
 
 <form action="{{ $action }}" method="POST" enctype="multipart/form-data">
     @csrf
