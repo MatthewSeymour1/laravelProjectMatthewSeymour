@@ -37,7 +37,7 @@ class GameController extends Controller
             'description' => 'required|max:500',
             'genre' => 'required|max:100',
             'release_year' => 'required|integer',
-            'image' => 'required|image|mimes:jpeg,png,gif,avif,jpg,webp,jfif|max:2048',
+            'image' => 'required|image|max:2048',
         ]);
 
         if ($request->hasFile('image')) {
@@ -85,7 +85,7 @@ class GameController extends Controller
             'description' => 'required|max:500',
             'genre' => 'required|max:100',
             'release_year' => 'required|integer',
-            'image' => 'sometimes|image|mimes:jpeg,png,gif,avif,jpg,webp|max:2048',
+            'image' => 'sometimes|image|max:2048',
         ]);
 
 
@@ -113,4 +113,6 @@ class GameController extends Controller
         $game->delete();
         return redirect()->route('games.index')->with('success', 'Game Deleted Successfully');
     }
+
+
 }

@@ -87,5 +87,9 @@
         <x-primary-button>
             {{ isset($game) ? 'Update Game' : 'Add Game'}}
         </x-primary-button>
+
+        <a href="{{ route('games.index') }}" class="text-gray-600 bg-orange-300 hover:bg-orange-700 font-bold py-2 px-4 rounded">
+            Cancel
+        </a>
     </div>
 </form>

@@ -8,7 +8,10 @@
     <h2 class="text-gray-300 text-sm italic mb-4" style="font-size: 1rem;">Published: {{ $release_year }}</h2>
     <h2 class="text-gray-300 text-sm italic mb-4" style="font-size: 1rem;">Genre: {{ $genre }}</h2>
     <h3 class="text-white font-semibold mb-2" style="font-size: 2rem;">Description</h3>
-    <p class="text-white leading-relaxed">{!! $description !!}</p>
+    <p class="text-white leading-relaxed mb-3">{!! $description !!}</p>
+    <a href="{{ route('games.index') }}" class="text-gray-600 bg-orange-300 hover:bg-orange-700 font-bold py-2 px-4 rounded">
+            Back
+    </a>
     <!--     <p class="text-gray-700 leading-relaxed">{{ $description }}</p> 
          This is what I had originally but the "&" kept appearing as "&amp;" so I changed it. I also made this change to the title. -->
 </div>
