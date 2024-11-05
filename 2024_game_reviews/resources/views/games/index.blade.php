@@ -4,13 +4,47 @@
             {{ __('All Games') }}
         </h2>
     </x-slot>
+    
 
     <x-alert-success>
         {{ session('success') }}
     </x-alert-success>
 
+
+
     <div class="py-12 bg-gray-700">
+
+    
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+
+                        <!-- Order By Dropdown -->
+
+<div class="container">
+    <div class="row">
+        <div class="col">
+        <form action="{{ route('games.index') }}" method="GET" class=" px-5 flex gap-2 mx-auto mb-3">
+                <select name="sort" class="w-full border-gray-300 rounded-md shadow-sm p-2">
+                    <option value="">Sort By</option>
+                    <option value="title_asc" {{ request('sort') == 'title_asc' ? 'selected' : '' }}>
+                        Title Ascending
+                    </option>
+                    <option value="title_desc" {{ request('sort') == 'title_desc' ? 'selected' : '' }}>
+                        Title Descending
+                    </option>
+                    <option value="release_year_asc" {{ request('sort') == 'release_year_asc' ? 'selected' : '' }}>
+                        Release Year Ascending
+                    </option>
+                    <option value="release_year_desc" {{ request('sort') == 'release_year_asc' ? 'selected' : '' }}>
+                        Release Year Descending
+                    </option>
+                </select>                
+                <button type='submit' class="bg-green-500 hover:bg-red-700 text-gray-600 font-bold py-2 px-4 rounded">Submit</button>
+            </form>
+        </div>
+    </div>
+</div>
+            
+
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-white bg-gray-900">
                     <h3 class="font-semibold text-lg mb-4">List of Games:</h3>

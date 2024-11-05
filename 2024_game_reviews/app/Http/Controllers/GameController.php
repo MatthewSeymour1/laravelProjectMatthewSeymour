@@ -12,9 +12,26 @@ class GameController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $games = Game::all();
+        $sort = $request->input('sort', 'title_asc');
+        $query = Game::query();
+
+        //Put name="sort" in the index view
+        if ($sort == 'title_asc') {
+            $query->orderBy('title', 'asc');
+        }
+        else if ($sort == 'title_desc') {
+            $query->orderBy('title', 'desc');
+        }
+        else if ($sort == 'release_year_asc') {
+            $query->orderBy('release_year', 'asc');
+        }
+        else if ($sort == 'release_year_desc') {
+            $query->orderBy('release_year', 'desc');
+        }
+
+        $games = $query->get();
         return view('games.index', compact('games'));
     }
 
