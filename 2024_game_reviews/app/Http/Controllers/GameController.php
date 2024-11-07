@@ -14,8 +14,13 @@ class GameController extends Controller
      */
     public function index(Request $request)
     {
+        $search = $request->input('search');
         $sort = $request->input('sort', 'title_asc');
         $query = Game::query();
+
+        if ($search) {
+            $query->where('title', 'like', "%$search%");
+        }
 
         //Put name="sort" in the index view
         if ($sort == 'title_asc') {

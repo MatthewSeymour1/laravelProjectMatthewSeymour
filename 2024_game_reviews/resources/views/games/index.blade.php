@@ -22,9 +22,21 @@
 <div class="container">
     <div class="row">
         <div class="col">
-        <form action="{{ route('games.index') }}" method="GET" class=" px-5 flex gap-2 mx-auto mb-3">
+
+
+<!--                     oninput="window.location = '?search=' + this.value" -->
+
+
+            <form action="{{ route('games.index') }}" method="GET" class=" px-5 flex gap-2 mx-auto mb-3">
+                <input 
+                        type="text"
+                        name="search"
+                        placeholder="Search for a Game"
+                        value="{{ request('search') }}"
+                        class=""
+                >
                 <select name="sort" class="w-full border-gray-300 rounded-md shadow-sm p-2">
-                    <option value="">Sort By</option>
+                    <option value="">Sort By None</option>
                     <option value="title_asc" {{ request('sort') == 'title_asc' ? 'selected' : '' }}>
                         Title Ascending
                     </option>
@@ -34,11 +46,11 @@
                     <option value="release_year_asc" {{ request('sort') == 'release_year_asc' ? 'selected' : '' }}>
                         Release Year Ascending
                     </option>
-                    <option value="release_year_desc" {{ request('sort') == 'release_year_asc' ? 'selected' : '' }}>
+                    <option value="release_year_desc" {{ request('sort') == 'release_year_desc' ? 'selected' : '' }}>
                         Release Year Descending
                     </option>
                 </select>                
-                <button type='submit' class="bg-green-500 hover:bg-red-700 text-gray-600 font-bold py-2 px-4 rounded">Submit</button>
+                <button type='submit' class="bg-green-500 hover:bg-red-700 text-gray-600 font-bold py-2 px-4 rounded">Apply</button>
             </form>
         </div>
     </div>
