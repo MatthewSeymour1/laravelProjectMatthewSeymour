@@ -30,6 +30,3 @@ class GameSeeder extends Seeder
         ]);
     }
 }
-
-/* ['title' => '', 'genre' => '', 'release_year' => , 'description' => '', 'image' => 'image0.jpg', 'created_at' => $currentTimeStamp, 'updated_at' => $currentTimeStamp],
-*/

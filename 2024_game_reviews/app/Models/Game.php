@@ -9,6 +9,8 @@ class Game extends Model
 {
     use HasFactory;
 
+    // $fillable specifies which attributes are mass assignable. Meaning attributes that are not in $fillable
+    // will not be able to be created or updated by the user.
     protected $fillable = [
         'title',
         'genre',
