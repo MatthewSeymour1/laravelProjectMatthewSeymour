@@ -19,7 +19,6 @@ class GameController extends Controller
             $query->where('title', 'like', "%$search%");
         }
 
-        //Put name="sort" in the index view
         if ($sort == 'title_asc') {
             $query->orderBy('title', 'asc');
         }
