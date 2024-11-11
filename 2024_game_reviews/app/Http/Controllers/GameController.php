@@ -11,14 +11,19 @@ class GameController extends Controller
 {
     public function index(Request $request)
     {
+        //Initialises variables
         $search = $request->input('search');
         $sort = $request->input('sort', 'title_asc');
         $query = Game::query();
 
+
+        //Filters the list of games
         if ($search) {
             $query->where('title', 'like', "%$search%");
         }
 
+        //Sorts the filtered list of games
+        //If there is not filter, than it sorts the entire list of games
         if ($sort == 'title_asc') {
             $query->orderBy('title', 'asc');
         }
@@ -50,6 +55,7 @@ class GameController extends Controller
 
     public function store(Request $request)
     {
+        //Validates the form
         $request->validate([
             'title' => 'required',
             'description' => 'required|max:500',
@@ -58,6 +64,7 @@ class GameController extends Controller
             'image' => 'required|image|max:2048',
         ]);
 
+        //Sets the path for the image
         if ($request->hasFile('image')) {
             $imageName = time() . '.' . $request->image->extension();
             $request->image->move(public_path('images/games'), $imageName);
@@ -66,6 +73,7 @@ class GameController extends Controller
             $imageName = null;
         }
 
+        //Creates the game with the form data
         game::create([
             'title' => $request->title,
             'description' => $request->description,
@@ -98,6 +106,7 @@ class GameController extends Controller
      */
     public function update(Request $request, Game $game)
     {
+        //Validates the form
         $request->validate([
             'title' => 'required',
             'description' => 'required|max:500',
@@ -110,6 +119,9 @@ class GameController extends Controller
         // Josh helped me out a bunch here. My original code didn't have the unlink() part so if a game was created, the path would be recorded as images/games. Which is a problem with out unlink() because when I went to re-set the path it would record it as images/games/images/games.
         $data = $request->only(['title', 'description', 'genre', 'release_year']);
         
+        //If there's a file
+        //  If there's already a path set
+        //Set a new path
         if ($request->hasFile('image')) {
             if ($game->image && file_exists(public_path($game->image))) {
                 unlink(public_path($game->image));
