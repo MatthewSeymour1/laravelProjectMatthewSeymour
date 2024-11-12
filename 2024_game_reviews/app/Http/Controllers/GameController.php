@@ -6,6 +6,7 @@ use App\Models\Game;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
+//This is the GameController
 
 class GameController extends Controller
 {
