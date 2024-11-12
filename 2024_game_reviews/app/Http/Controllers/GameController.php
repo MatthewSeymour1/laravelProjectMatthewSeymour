@@ -130,7 +130,7 @@ class GameController extends Controller
             $imageName = time() . '.' . $request->image->extension();
             $request->file('image')->move(public_path('images/games'), $imageName);
             $data['image'] = $imageName;
-        }
+        } 
 
         $game->update($data);
         return redirect()->route('games.index')->with('success', 'Game Updated Successfully');
