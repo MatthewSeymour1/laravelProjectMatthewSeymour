@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
 //This is the GameController
-
+//This is not a gameContrller
 class GameController extends Controller
 {
     public function index(Request $request)
