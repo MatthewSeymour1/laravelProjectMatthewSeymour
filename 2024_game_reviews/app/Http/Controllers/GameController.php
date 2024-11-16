@@ -6,9 +6,6 @@ use App\Models\Game;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
-//This is the GameController
-//This is not a gameContrller
-//This might be a controller!
 class GameController extends Controller
 {
     public function index(Request $request)
@@ -48,6 +45,9 @@ class GameController extends Controller
      */
     public function create()
     {
+        if (auth()->user()->role !== 'admin') {
+            return redirect()->route('games.index')->with('error', 'Access Denied.');
+        }
         return view('games.create');
     }
 
@@ -76,7 +76,7 @@ class GameController extends Controller
         }
 
         //Creates the game with the form data
-        game::create([
+        Game::create([
             'title' => $request->title,
             'description' => $request->description,
             'genre' => $request->genre,
@@ -92,7 +92,9 @@ class GameController extends Controller
      */
     public function show(Game $game)
     {
-        return view('games.show')->with('game', $game);
+        $game->load('reviews.user');
+        return view('games.show', compact('game'));
+        // return view('games.show')->with('game', $game);
     }
 
     /**
