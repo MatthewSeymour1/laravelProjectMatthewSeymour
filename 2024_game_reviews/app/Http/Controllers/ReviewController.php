@@ -34,7 +34,7 @@ class ReviewController extends Controller
             'comment' => 'nullable|string|max:1000',
         ]);
 
-        // Create the review associated with the book and user
+        // Create the review associated with the game and user
         $game->reviews()->create([
             'user_id' => auth()->id(),
             'rating' => $request->input('rating'),
@@ -58,7 +58,13 @@ class ReviewController extends Controller
      */
     public function edit(Review $review)
     {
-        //
+        // Check if user is the owner of a review, or an admin
+        if (auth()->user()->id !== $review->user_id && auth()->user()->role !== 'admin') {
+            return redirect()->route('games.index')->with('error', 'Access Denied.');
+        }
+
+        // I am passing the game and the review object to the view, as they are both needed.
+        return view('reviews.edit', compact('review'));
     }
 
     /**
@@ -66,7 +72,21 @@ class ReviewController extends Controller
      */
     public function update(Request $request, Review $review)
     {
-        //
+        // Check if user is the owner of a review, or an admin
+        if (auth()->user()->id !== $review->user_id && auth()->user()->role !== 'admin') {
+            return redirect()->route('games.index')->with('error', 'Access Denied.');
+        }
+
+        $request->validate([
+            'rating' => 'required|integer|min:1|max:10',
+            'comment' => 'nullable|string|max:1000',
+        ]);
+
+        // Only rating and comment can be altered, not game_id or user_id.
+        $review->update($request->only(['rating', 'comment']));
+
+        return redirect()->route('games.show', $review->game_id)
+                        ->with('success', 'Review updated successfully.');
     }
 
     /**
