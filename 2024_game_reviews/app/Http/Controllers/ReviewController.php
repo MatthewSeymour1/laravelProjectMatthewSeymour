@@ -94,6 +94,9 @@ class ReviewController extends Controller
      */
     public function destroy(Review $review)
     {
-        //
+        $review->delete();
+
+        return redirect()->route('games.show', $review->game_id)
+                        ->with('success', 'Game Deleted Successfully!');
     }
 }

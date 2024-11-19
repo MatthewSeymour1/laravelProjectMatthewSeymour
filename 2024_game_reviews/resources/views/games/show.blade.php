@@ -5,6 +5,15 @@
         </h2>
     </x-slot>
 
+     <!-- Flash Message Display -->
+     <x-alert-success>
+        {{ session('success') }}
+    </x-alert-success>
+
+    <x-alert-error>
+        {{ session('error') }}
+    </x-alert-error>
+
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-gray-900 overflow-hidden shadow-sm sm:rounded-lg">
@@ -31,16 +40,15 @@
                                     <p>{{ $review->comment }}</p>
 
 
-                                    @if ($review->user->is(auth()) || auth()->role === 'admin')
+                                    @if ($review->user->is(auth()->user()) || auth()->user()->role === 'admin')
 
                                         <a href="{{ route('reviews.edit', $review) }}" class="bg-yellow-500 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded">
                                             {{ __('Edit Review') }}
                                         </a>
-                                        <form method="POST" action="{{ route('reviews.destroy', $review)">
+                                        <form method="POST" action="{{ route('reviews.destroy', $review) }}" onsubmit="return confirm('Are you sure you want to delete this review?');">
                                             @csrf
                                             @method('delete')
-                                            <x-danger-button :href="route('reviews.destroy', $review)"
-                                                                onclick="event.preventDefault(); this.closest('form').submit();">
+                                            <x-danger-button>
                                                 {{ __('Delete Review') }}
                                             </x-danger-button>
                                         </form>

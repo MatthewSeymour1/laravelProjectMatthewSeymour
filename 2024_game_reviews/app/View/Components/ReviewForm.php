@@ -21,6 +21,6 @@ class ReviewForm extends Component
      */
     public function render(): View|Closure|string
     {
-        return view('components.ReviewForm');
+        return view('components.review-form');
     }
 }
