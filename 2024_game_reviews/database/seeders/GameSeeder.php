@@ -28,5 +28,21 @@ class GameSeeder extends Seeder
             ['title' => 'Sonic X Shadow Generations', 'genre' => 'Platform Game', 'release_year' => 2024, 'description' => 'Sonic Generations is a platformer that celebrates Sonic the Hedgehog\'s 20th anniversary by blending classic 2D and modern 3D gameplay. Players control both classic Sonic and modern Sonic as they navigate iconic levels, battling foes like Shadow the Hedgehog. The game features fast-paced action, vibrant graphics, and nostalgic references to Sonic\'s rich history.', 'image' => 'image10.webp', 'created_at' => $currentTimeStamp, 'updated_at' => $currentTimeStamp],
             ['title' => 'Minecraft', 'genre' => 'Survival Game', 'release_year' => 2009, 'description' => 'Minecraft is a sandbox game that allows players to build and explore their own blocky, procedurally generated worlds. With a focus on creativity, survival, and resource management, players can gather materials, craft tools, and construct structures. The game features various modes, including survival, creative, and adventure, encouraging limitless exploration and imagination.', 'image' => 'image11.png', 'created_at' => $currentTimeStamp, 'updated_at' => $currentTimeStamp]
         ]);
+
+        foreach ($games as $gameData) {
+            // Insert the game into the game table
+            $game = Game::create(array_merge($gameData, ['created_at' => $currentTimeStamp, 'updated at' => $currentTimeStamp]));
+    
+            // randomly select two companies !note - companies must exist in the companies table
+            // So CompanySeeder must be executed before GameSeeder
+            $companies = Company::inRandomOrder()->take(2)->pluck('id');
+    
+            // Attach companies to games.
+            // Laravels attach() function inserts a row in the pivot table indicating that this game is made by this company
+            // You need to have the relationships and pivot table set up correctly for this to work.
+            $game->companies()->attach($companies);
+        }
     }
+
+
 }

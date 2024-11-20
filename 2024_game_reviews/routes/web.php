@@ -31,6 +31,9 @@ Route::middleware('auth')->group(function () {
     Route::resource('reviews', ReviewController::class);
     Route::post('games/{game}/reviews', [ReviewController::class, 'store'])->name('reviews.store');
 
+    // The code below creates all routes for companies
+    Route::resource('companies', CompanyController::class)->middleware('auth');
+
 
 });
 

@@ -21,8 +21,14 @@ class Game extends Model
         'updated_at',
     ];
 
+    // Games can have many reviews
     public function reviews()
     {
         return $this->hasMany(Review::class);
+    }
+
+    // Games can be made by many 'roles' (being developers or publishers)
+    public function authors() {
+        return $this->belongsToMany(Company::class);
     }
 }
