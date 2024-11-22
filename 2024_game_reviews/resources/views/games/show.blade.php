@@ -25,6 +25,7 @@
                         :release_year="$game->release_year"
                         :description="$game->description"
                         :genre="$game->genre"
+                        :publishers="$game->publishers"
                     />
                     
                     <!-- Shows Reviews: -->

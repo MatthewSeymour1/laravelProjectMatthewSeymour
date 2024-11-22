@@ -1,4 +1,4 @@
-@props(['title', 'release_year', 'description', 'image', 'genre'])
+@props(['title', 'release_year', 'description', 'image', 'genre', 'publishers'])
 
 <div class="border rounded-lg shadow-md p-6 bg-gray-900 hover:shadow-lg transition duration-300 max-w-xl mx-auto">
     <h1 class="font-bold text-white mb-2" style="font-size: 3rem;">{!! $title !!}</h1>
@@ -12,6 +12,12 @@
     <a href="{{ route('games.index') }}" class="text-gray-600 bg-orange-300 hover:bg-orange-700 font-bold py-2 px-4 rounded">
             Back
     </a>
+    @if ($publishers->isEmpty())
+        <p>No publishers available for this game</p>
+    @endif
+    @foreach ($publishers as $publisher)
+    <div>{{ $publisher->name }}</div>
+    @endforeach
     <!--     <p class="text-gray-700 leading-relaxed">{{ $description }}</p> 
          This is what I had originally but the "&" kept appearing as "&amp;" so I changed it. I also made this change to the title. -->
 </div>

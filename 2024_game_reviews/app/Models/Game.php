@@ -28,7 +28,15 @@ class Game extends Model
     }
 
     // Games can be made by many 'roles' (being developers or publishers)
-    public function authors() {
+    public function companies() {
         return $this->belongsToMany(Company::class);
+    }
+
+    public function publishers() {
+        return $this->belongsToMany(Company::class)->where('companies.role', 'publisher');
+    }
+
+    public function developers() {
+        return $this->belongsToMany(Company::class)->where('companies.role', 'developer');
     }
 }

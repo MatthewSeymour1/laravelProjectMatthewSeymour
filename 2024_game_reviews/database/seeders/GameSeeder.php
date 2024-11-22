@@ -1,10 +1,12 @@
 <?php
 
+// Need to run the company seeder first, THEN the game seeder. This is because the game seeder fetches the companies from the  database and attaches them to
 namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use App\Models\Game;
+use App\Models\Company;
 use Carbon\Carbon;
 
 class GameSeeder extends Seeder
@@ -15,7 +17,7 @@ class GameSeeder extends Seeder
     public function run(): void
     {
         $currentTimeStamp = Carbon::now();
-        Game::insert([
+        $games = [
             ['title' => 'The Elder Scrolls V: Skyrim', 'genre' => 'Action', 'release_year' => 2011, 'description' => 'Skyrim, part of "The Elder Scrolls" series, is an expansive open-world action RPG set in a rich fantasy universe. Players explore the province of Skyrim, engaging in quests, character customization, and epic battles against dragons. Its immersive gameplay, detailed lore, and freedom of choice create a captivating experience for players.', 'image' => 'image01.png', 'created_at' => $currentTimeStamp, 'updated_at' => $currentTimeStamp],
             ['title' => 'Ratchet & Clank', 'genre' => 'Action', 'release_year' => 2002, 'description' => 'Ratchet & Clank, released in 2002, is a platforming action-adventure game featuring a lombax named Ratchet and a small robot named Clank. Together, they explore vibrant worlds, battle enemies, and collect gadgets. Known for its humor, imaginative weapons, and engaging gameplay, it launched a beloved franchise.', 'image' => 'image02.jpg', 'created_at' => $currentTimeStamp, 'updated_at' => $currentTimeStamp],
             ['title' => 'Jak and Daxter: The Precursor Legacy', 'genre' => 'Platform', 'release_year' => 2001, 'description' => 'Jak and Daxter: The Precursor Legacy, released in 2001, follows Jak and his sidekick Daxter on an adventure through a vibrant, open world. After a mishap with dark eco, Daxter transforms into an ottsel. Players explore, solve puzzles, and battle foes in this beloved platforming adventure.', 'image' => 'image03.avif', 'created_at' => $currentTimeStamp, 'updated_at' => $currentTimeStamp],
@@ -27,11 +29,11 @@ class GameSeeder extends Seeder
             ['title' => 'Pokémon Sun', 'genre' => 'Role Playing Game', 'release_year' => 2016, 'description' => 'Pokémon Sun is a role-playing game in the Pokémon series, set in the tropical Alola region. Players assume the role of a young Trainer, capturing and battling Pokémon while exploring diverse islands. Featuring new creatures, regional forms, and a fresh storyline, the game emphasizes adventure and discovery, culminating in challenging battles against the Elite Four.', 'image' => 'image09.jpg', 'created_at' => $currentTimeStamp, 'updated_at' => $currentTimeStamp],
             ['title' => 'Sonic X Shadow Generations', 'genre' => 'Platform Game', 'release_year' => 2024, 'description' => 'Sonic Generations is a platformer that celebrates Sonic the Hedgehog\'s 20th anniversary by blending classic 2D and modern 3D gameplay. Players control both classic Sonic and modern Sonic as they navigate iconic levels, battling foes like Shadow the Hedgehog. The game features fast-paced action, vibrant graphics, and nostalgic references to Sonic\'s rich history.', 'image' => 'image10.webp', 'created_at' => $currentTimeStamp, 'updated_at' => $currentTimeStamp],
             ['title' => 'Minecraft', 'genre' => 'Survival Game', 'release_year' => 2009, 'description' => 'Minecraft is a sandbox game that allows players to build and explore their own blocky, procedurally generated worlds. With a focus on creativity, survival, and resource management, players can gather materials, craft tools, and construct structures. The game features various modes, including survival, creative, and adventure, encouraging limitless exploration and imagination.', 'image' => 'image11.png', 'created_at' => $currentTimeStamp, 'updated_at' => $currentTimeStamp]
-        ]);
+        ];
 
         foreach ($games as $gameData) {
             // Insert the game into the game table
-            $game = Game::create(array_merge($gameData, ['created_at' => $currentTimeStamp, 'updated at' => $currentTimeStamp]));
+            $game = Game::create(array_merge($gameData, ['created_at' => $currentTimeStamp, 'updated_at' => $currentTimeStamp]));
     
             // randomly select two companies !note - companies must exist in the companies table
             // So CompanySeeder must be executed before GameSeeder
@@ -40,7 +42,7 @@ class GameSeeder extends Seeder
             // Attach companies to games.
             // Laravels attach() function inserts a row in the pivot table indicating that this game is made by this company
             // You need to have the relationships and pivot table set up correctly for this to work.
-            $game->companies()->attach($companies);
+            $game->companies()->attach($companies, ['created_at' => $currentTimeStamp, 'updated_at' => $currentTimeStamp]);
         }
     }
 
