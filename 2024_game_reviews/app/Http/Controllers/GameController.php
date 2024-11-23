@@ -93,8 +93,6 @@ class GameController extends Controller
     public function show(Game $game)
     {
         $game->load('reviews.user', 'publishers'); // Soon to also contain developers
-
-       dd($game->publishers);
         return view('games.show', compact('game'));
         // return view('games.show')->with('game', $game);
     }

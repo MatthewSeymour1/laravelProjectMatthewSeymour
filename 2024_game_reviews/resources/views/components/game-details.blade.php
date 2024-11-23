@@ -12,12 +12,19 @@
     <a href="{{ route('games.index') }}" class="text-gray-600 bg-orange-300 hover:bg-orange-700 font-bold py-2 px-4 rounded">
             Back
     </a>
+    <!-- If there are publishers, then show them. Else show "No publishers etc" -->
     @if ($publishers->isEmpty())
         <p>No publishers available for this game</p>
-    @endif
+    @elseif ($publishers->count() === 1)
+        <p>This game was published by {{ $publishers->first()->name }}.</p>
+    else
+    <p>Publishers:</p>
     @foreach ($publishers as $publisher)
     <div>{{ $publisher->name }}</div>
     @endforeach
+    @endif
+    
+
     <!--     <p class="text-gray-700 leading-relaxed">{{ $description }}</p> 
          This is what I had originally but the "&" kept appearing as "&amp;" so I changed it. I also made this change to the title. -->
 </div>
