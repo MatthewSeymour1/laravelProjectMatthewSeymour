@@ -26,6 +26,7 @@
                         :description="$game->description"
                         :genre="$game->genre"
                         :publishers="$game->publishers"
+                        :developers="$game->developers"
                     />
                     
                     <!-- Shows Reviews: -->

@@ -92,7 +92,7 @@ class GameController extends Controller
      */
     public function show(Game $game)
     {
-        $game->load('reviews.user', 'publishers'); // Soon to also contain developers
+        $game->load('reviews.user', 'publishers'); // Soon to also contain developers also idrk what this does.
         return view('games.show', compact('game'));
         // return view('games.show')->with('game', $game);
     }
