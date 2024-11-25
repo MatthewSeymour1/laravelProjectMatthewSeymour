@@ -92,9 +92,14 @@ class GameController extends Controller
      */
     public function show(Game $game)
     {
-        $game->load('reviews.user', 'publishers'); // Soon to also contain developers also idrk what this does.
-        return view('games.show', compact('game'));
-        // return view('games.show')->with('game', $game);
+        //This loads the data to reduce the number of queries needed, increasing proficiency.
+        $game->load('reviews.user', 'publishers', 'developers');
+
+        //Gets the list of publishers and developers
+        $publishersString = $game->publishers->pluck('name')->implode(', ');
+        $developersString = $game->developers->pluck('name')->implode(', ');
+
+        return view('games.show', compact('game', 'publishersString', 'developersString'));
     }
 
     /**

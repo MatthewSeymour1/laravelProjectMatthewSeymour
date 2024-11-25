@@ -32,6 +32,7 @@ class CompanySeeder extends Seeder
             ['name' => 'Blizzard Entertainment', 'role' => 'publisher', 'created_at' => $currentTimeStamp, 'updated_at' => $currentTimeStamp],
             ['name' => 'Blizzard Entertainment', 'role' => 'developer', 'created_at' => $currentTimeStamp, 'updated_at' => $currentTimeStamp],
             ['name' => 'Activision', 'role' => 'publisher', 'created_at' => $currentTimeStamp, 'updated_at' => $currentTimeStamp],
+            ['name' => 'Infinity Ward', 'role' => 'developer', 'created_at' => $currentTimeStamp, 'updated_at' => $currentTimeStamp],
             ['name' => 'Raven Software', 'role' => 'developer', 'created_at' => $currentTimeStamp, 'updated_at' => $currentTimeStamp],
             ['name' => 'The Pokémon Company', 'role' => 'publisher', 'created_at' => $currentTimeStamp, 'updated_at' => $currentTimeStamp],
             ['name' => 'Nintendo', 'role' => 'publisher', 'created_at' => $currentTimeStamp, 'updated_at' => $currentTimeStamp],
