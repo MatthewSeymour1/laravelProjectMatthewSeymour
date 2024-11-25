@@ -12,7 +12,8 @@ class CompanyController extends Controller
      */
     public function index()
     {
-        //
+        $companies = Company::query()->get();
+        return view('companies.index', compact('companies'));
     }
 
     /**
