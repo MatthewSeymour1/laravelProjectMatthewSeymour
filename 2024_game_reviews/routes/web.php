@@ -21,7 +21,7 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/games', [GameController::class, 'index'])->name('games.index');
     Route::get('/games/create', [GameController::class, 'create'])->name('games.create');
-    Route::post('/games', [GameController::class, 'store'])->name('games.store'); //I think this one get's overwritten by the one on line 31 // Update: It works without overwriting.
+    Route::post('/games', [GameController::class, 'store'])->name('games.store');
     Route::get('/games/{game}', [GameController::class, 'show'])->name('games.show');
 
     Route::get('/games/{game}/edit', [GameController::class, 'edit'])->name('games.edit');
@@ -35,6 +35,14 @@ Route::middleware('auth')->group(function () {
     // The code below creates all routes for companies
     Route::resource('companies', CompanyController::class)->middleware('auth');
 
+
+    //This part returns the user to the games.index page if they enter an incorrect URL. This is to ensure they don't ever see a 404 not found page.
+    Route::fallback(function () {
+        if (auth()->check() && auth()->user()->role !== 'admin') {
+            return redirect()->route('games.index')->with('error', 'Close! But no cigar, Merry Christmas!');
+        }
+        return redirect('/');
+    });
 
 });
 
