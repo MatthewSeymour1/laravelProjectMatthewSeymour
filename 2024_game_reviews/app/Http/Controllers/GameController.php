@@ -107,6 +107,9 @@ class GameController extends Controller
      */
     public function edit(Game $game)
     {
+        if (auth()->user()->role !== 'admin') {
+            return redirect()->route('games.index')->with('error', 'Access Denied.');
+        }
         return view('games.edit', compact('game'));
     }
 

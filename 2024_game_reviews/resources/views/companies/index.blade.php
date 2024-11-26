@@ -29,7 +29,6 @@
 <!-- the "x-company-card" looks for a corresponding component in the components folder called company-card. -->
                                 <x-company-card
                                     :name="$company"
-                                    :image="$company->image"
                                 />
 <!-- Here is the edit and delete buttons (in the foreach loop) which now only appear if the user is a user and not an admin. -->
 

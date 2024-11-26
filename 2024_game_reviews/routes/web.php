@@ -38,7 +38,7 @@ Route::middleware('auth')->group(function () {
 
     //This part returns the user to the games.index page if they enter an incorrect URL. This is to ensure they don't ever see a 404 not found page.
     Route::fallback(function () {
-        if (auth()->check() && auth()->user()->role !== 'admin') {
+        if (auth()->check()) {
             return redirect()->route('games.index')->with('error', 'Close! But no cigar, Merry Christmas!');
         }
         return redirect('/');
