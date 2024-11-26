@@ -23,12 +23,12 @@
                 <div class="p-6 text-white bg-gray-900">
                     <h3 class="font-semibold text-lg mb-4">List of Companys:</h3>
                     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                        @foreach($companies as $company)
+                        @foreach($uniqueCompanies as $company)
                         <div>
                             <a href="{{ route('companies.show', $company) }}">
 <!-- the "x-company-card" looks for a corresponding component in the components folder called company-card. -->
                                 <x-company-card
-                                    :title="$company->title"
+                                    :name="$company"
                                 />
 <!-- Here is the edit and delete buttons (in the foreach loop) which now only appear if the user is a user and not an admin. -->
 

@@ -12,8 +12,8 @@ class CompanyController extends Controller
      */
     public function index()
     {
-        $companies = Company::query()->get();
-        return view('companies.index', compact('companies'));
+        $uniqueCompanies = Company::pluck('name')->unique()->toArray();
+        return view('companies.index', compact('uniqueCompanies'));
     }
 
     /**
