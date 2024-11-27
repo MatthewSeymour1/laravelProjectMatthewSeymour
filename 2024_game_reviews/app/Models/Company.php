@@ -9,7 +9,7 @@ class Company extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'role'];
+    protected $fillable = ['name', 'role', 'image'];
 
     // Role (being publisher or developer) can make many games.
     public function games() {

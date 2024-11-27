@@ -13,24 +13,24 @@
         {{ session('error') }}
     </x-alert-error>
 
-<!-- Here is where the sorting part would go. -->
-
-
-
             
-<!-- Here is a foreach loop that creates a company card for each company in the database. -->
+    <div class="py-12 bg-gray-700">
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+            <!-- Here is where the sorting part would go. -->
+            <!-- Here is a foreach loop that creates a company card for each company in the database. -->
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-white bg-gray-900">
                     <h3 class="font-semibold text-lg mb-4">List of Companys:</h3>
                     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                        @foreach($uniqueCompanies as $company)
+                        @foreach($companies as $company)
                         <div>
                             <a href="{{ route('companies.show', $company) }}">
-<!-- the "x-company-card" looks for a corresponding component in the components folder called company-card. -->
+                                <!-- the "x-company-card" looks for a corresponding component in the components folder called company-card. -->
                                 <x-company-card
-                                    :name="$company"
+                                    :name="$company->name"
+                                    :image="$company->image"
                                 />
-<!-- Here is the edit and delete buttons (in the foreach loop) which now only appear if the user is a user and not an admin. -->
+                                <!-- Here is the edit and delete buttons (in the foreach loop) which now only appear if the user is a user and not an admin. -->
 
                                 @if(auth()->user()->role === 'admin')
                                     <div class="mt-4 flex space-x-2">
@@ -38,10 +38,10 @@
                                             Edit
                                         </a>
 
-    <!-- @csrf is used to protect the application from CSRF attacks. By ensuring that the form request is coming from the same application
-        and not a third party site, it increases the security.
-        CSRF attacks occur when a malcious user tricks a logged in user into performing
-        an unwanted action on a site where they are authenticated. -->
+                                        <!-- @csrf is used to protect the application from CSRF attacks. By ensuring that the form request is coming from the same application
+                                            and not a third party site, it increases the security.
+                                            CSRF attacks occur when a malcious user tricks a logged in user into performing
+                                            an unwanted action on a site where they are authenticated. -->
                                         <form action="{{ route('companies.destroy', $company) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this company?');">
                                             @csrf
                                             @method('DELETE')

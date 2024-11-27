@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Company;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+
 
 class CompanyController extends Controller
 {
@@ -12,8 +14,8 @@ class CompanyController extends Controller
      */
     public function index()
     {
-        $uniqueCompanies = Company::pluck('name')->unique()->toArray();
-        return view('companies.index', compact('uniqueCompanies'));
+        $companies = Company::all()->unique('name');
+        return view('companies.index', compact('companies'));
     }
 
     /**
@@ -21,7 +23,10 @@ class CompanyController extends Controller
      */
     public function create()
     {
-        //
+        if (auth()->user()->role !== 'admin') {
+            return redirect()->route('games.index')->with('error', 'Access Denied.');
+        }
+        return view('companies.create');
     }
 
     /**
