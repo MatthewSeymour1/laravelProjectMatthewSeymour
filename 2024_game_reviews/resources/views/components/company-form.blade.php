@@ -1,4 +1,4 @@
-@props(['action', 'method', 'company' => null])
+@props(['action', 'method', 'company' => null, 'games'])
 
 <form action="{{ $action }}" method="POST" enctype="multipart/form-data">
     @csrf
@@ -22,15 +22,15 @@
 
 
     <div>
-            <label for="role" class="block text-sm font-medium text-white">Role</label>
-            <select name="role" id="role" class="mt-1 block w-full bg-gray-700 text-white" required>
-                <option value="developer">Developer</option>
-                <option value="publisher">Publisher</option>
-            </select>
-            @error('role')
-                <span class="text-red-500 text-xs mt-1">{{ $message }}</span>
-            @enderror
-        </div>
+        <label for="role" class="block text-sm font-medium text-white">Role</label>
+        <select name="role" id="role" class="mt-1 block w-full bg-gray-700 text-white" required>
+            <option value="developer" selected>Developer</option>
+            <option value="publisher">Publisher</option>
+        </select>
+        @error('role')
+            <span class="text-red-500 text-xs mt-1">{{ $message }}</span>
+        @enderror
+    </div>
 
     <div class="mb-4">
         <label for="image" class="block text-sm font-medium text-white">Company Image</label>
@@ -48,9 +48,16 @@
 
     @isset($company->image)
         <div class="mb-4">
-            <img src="{{ asset("images/companies/" . $company->image) }}" alt="Company cover" class="w-24 h-32 object-cover">
+            <img src="{{ asset('images/companies/' . $company->image) }}" alt="Company cover" class="w-24 h-32 object-cover">
         </div>
     @endisset
+
+    @foreach ($games as $game)
+    <label class="text-white me-5">
+        <input type="checkbox" name="games[]" value="{{ $game->id }}" {{ in_array($game->id, old('games', [])) ? 'checked' : '' }}>
+        {{ $game->title }}
+    </label>
+    @endforeach
 
     <div>
         <x-primary-button>

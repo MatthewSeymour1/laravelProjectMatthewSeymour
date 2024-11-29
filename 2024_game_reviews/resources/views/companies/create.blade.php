@@ -12,8 +12,9 @@
                     <h3 class="font-semibold text-lg text-white mb-4">Add a New Company:</h3>
 
                     <x-company-form
-                        :action="route('games.store')"
+                        :action="route('companies.store')"
                         :method="'POST'"
+                        :games="$games"
                     />
 
                 </div>

@@ -79,7 +79,7 @@
 
     @isset($game->image)
         <div class="mb-4">
-            <img src="{{ asset("images/games/" . $game->image) }}" alt="Game cover" class="w-24 h-32 object-cover">
+            <img src="{{ asset('images/games/' . $game->image) }}" alt="Game cover" class="w-24 h-32 object-cover">
         </div>
     @endisset
 

@@ -34,9 +34,11 @@ Route::middleware('auth')->group(function () {
 
     // The code below creates all routes for companies
     Route::resource('companies', CompanyController::class)->middleware('auth');
+    Route::get('companies/{company}', [CompanyController::class, 'show'])->name('companies.show');
 
 
-    //This part returns the user to the games.index page if they enter an incorrect URL. This is to ensure they don't ever see a 404 not found page.
+    // This part returns the user to the games.index page if they enter an incorrect URL (that is if they are logged in. Else they get returned to the dashboard).
+    // This is to ensure they don't ever see a 404 not found page.
     Route::fallback(function () {
         if (auth()->check()) {
             return redirect()->route('games.index')->with('error', 'Close! But no cigar, Merry Christmas!');

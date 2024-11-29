@@ -3,7 +3,7 @@
 <div class="border rounded-lg shadow-md p-6 bg-gray-900 hover:shadow-lg transition duration-300 max-w-xl mx-auto">
     <h1 class="font-bold text-white mb-2" style="font-size: 3rem;">{!! $title !!}</h1>
     <div class="overflow-hidden rounded-lg mb-4 flex justify-center"> 
-        <img src="{{asset('images/games/' . $image)}}" alt="{{ $title }}" class="w-full max-w-xs h-auto object-cover">
+        <img src="{{asset('images/games/' . $image)}}" alt="{{ $title }}" class="w-full h-auto object-cover">
     </div> 
     <p class="text-gray-300 text-sm italic mb-4" style="font-size: 1rem;">Year Published: {{ $release_year }}</p>
     <p class="text-gray-300 text-sm italic mb-4" style="font-size: 1rem;">Genre: {{ $genre }}</p>
