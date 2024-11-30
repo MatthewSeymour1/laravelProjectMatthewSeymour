@@ -22,10 +22,8 @@
                     <x-company-details
                         :name="$company->name"
                         :image="$company->image"
-                        :games="$gamesString"
                         :description="$company->description"
-                        :publishedGames="$publishedGames"
-                        :developedGames="$developedGames"
+                        :company="$company"
                     />
 
                     

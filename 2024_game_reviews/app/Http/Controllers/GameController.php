@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Game;
+use App\Models\Company;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Carbon\Carbon;
 
 class GameController extends Controller
 {
@@ -45,10 +47,11 @@ class GameController extends Controller
      */
     public function create()
     {
+        $companies = Company::all();
         if (auth()->user()->role !== 'admin') {
             return redirect()->route('games.index')->with('error', 'Access Denied.');
         }
-        return view('games.create');
+        return view('games.create', compact('companies'));
     }
 
     /**
@@ -64,6 +67,8 @@ class GameController extends Controller
             'genre' => 'required|max:100',
             'release_year' => 'required|integer',
             'image' => 'required|image|max:2048',
+            'companies' => 'array',
+            'companies.*' => 'exists:companies,id',
         ]);
 
         //Sets the path for the image
@@ -76,13 +81,18 @@ class GameController extends Controller
         }
 
         //Creates the game with the form data
-        Game::create([
+        $game = Game::create([
             'title' => $request->title,
             'description' => $request->description,
             'genre' => $request->genre,
             'release_year' => $request->release_year,
             'image' => $imageName,
         ]);
+
+        $currentTimeStamp = Carbon::now();
+        if ($request->has('companies')) {
+            $game->companies()->attach($request->input('companies'),  ['created_at' => $currentTimeStamp, 'updated_at' => $currentTimeStamp]);
+        }
 
         return to_route('games.index')->with('success', 'You just added another game!!!');
     }
@@ -93,7 +103,7 @@ class GameController extends Controller
     public function show(Game $game)
     {
         //This loads the data to reduce the number of queries needed, increasing proficiency.
-        $game->load('reviews.user', 'publishers', 'developers');
+        $game->load('reviews.user', 'publishers', 'developers', 'companies');
 
         //Gets the list of publishers and developers
         $publishersString = $game->publishers->pluck('name')->implode(', ');
@@ -128,7 +138,9 @@ class GameController extends Controller
         ]);
 
 
-        // Josh helped me out a bunch here. My original code didn't have the unlink() part so if a game was created, the path would be recorded as images/games. Which is a problem with out unlink() because when I went to re-set the path it would record it as images/games/images/games.
+        // Josh helped me out a bunch here. My original code didn't have the unlink() part so if a game was created, 
+        // the path would be recorded as images/games. Which is a problem with out unlink() because when I went to re-set the path
+        // it would record it as images/games/images/games.
         $data = $request->only(['title', 'description', 'genre', 'release_year']);
         
         //If there's a file

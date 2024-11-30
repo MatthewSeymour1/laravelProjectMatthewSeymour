@@ -33,6 +33,20 @@
     </div>
 
     <div class="mb-4">
+        <label for="description" class="block text-sm text-white">Description</label>
+        <input
+            type="text"
+            name="description"
+            id="description"
+            value="{{ old('description', $company->description ?? '') }}"
+            required
+            class="mt-1 block w-full border-gray-300 rounded-md shadow-sm bg-gray-500 text-white" />
+        @error('description')
+            <p class="text-sm text-red-600">{{ $message }}</p>
+        @enderror
+    </div>
+
+    <div class="mb-4">
         <label for="image" class="block text-sm font-medium text-white">Company Image</label>
         <input
             type="file"

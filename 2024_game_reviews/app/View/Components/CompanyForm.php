@@ -6,7 +6,7 @@ use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 
-class company-details extends Component
+class CompanyForm extends Component
 {
     /**
      * Create a new component instance.
@@ -21,6 +21,6 @@ class company-details extends Component
      */
     public function render(): View|Closure|string
     {
-        return view('components.company-details');
+        return view('components.company-form');
     }
 }

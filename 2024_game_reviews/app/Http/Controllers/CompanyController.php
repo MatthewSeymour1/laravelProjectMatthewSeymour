@@ -42,6 +42,7 @@ class CompanyController extends Controller
                 'name' => 'required',
                 'role' => 'required|in:developer,publisher',
                 'image' => 'required|image|max:2048',
+                'description' => 'nullable|max:500',
                 'games' => 'array',
                 'games.*' => 'exists:games,id', //This part checks if there is a game with the given ID in the database. This is to avoid malicious users.
             ]);
@@ -60,6 +61,7 @@ class CompanyController extends Controller
                 'name' => $request->name,
                 'role' => $request->role,
                 'image' => $imageName,
+                'description' => $request->description,
             ]);
     
             $currentTimeStamp = Carbon::now();
@@ -77,30 +79,9 @@ class CompanyController extends Controller
     {
         //This loads the data to reduce the number of queries needed, increasing proficiency.
         $company->load('games');
-
-
-        //Trying to get the company card in show.blade.php to say "Published and Developed:"
-        $developedGames = [];
-        $publishedGames = [];
-
-        // // Loop through the company's games and categorize them
-        // foreach ($company->games as $game) {
-        //     // Get the pivot data for the current game
-        //     $companyGameRelation = $game->companies->where('company_id', $company->id)->first();
-
-        //     // Check if the company is the developer or publisher of the game
-        //     if ($companyGameRelation && $companyGameRelation->pivot->role === 'developer') {
-        //         $developedGames[] = $game;
-        //     }
-        //     if ($companyGameRelation && $companyGameRelation->pivot->role === 'publisher') {
-        //         $publishedGames[] = $game;
-        //     }
-        // }
-
-        
         // $companyRole = $company->role;
         $gamesString = $company->games->pluck('title')->implode(', ');
-        return view('companies.show', compact('company', 'gamesString', 'publishedGames', 'developedGames'));
+        return view('companies.show', compact('company', 'gamesString'));
     }
 
     /**

@@ -1,4 +1,4 @@
-@props(['action', 'method', 'game' => null])
+@props(['action', 'method', 'game' => null, 'companies'])
 
 <form action="{{ $action }}" method="POST" enctype="multipart/form-data">
     @csrf
@@ -82,6 +82,13 @@
             <img src="{{ asset('images/games/' . $game->image) }}" alt="Game cover" class="w-24 h-32 object-cover">
         </div>
     @endisset
+
+    @foreach ($companies as $company)
+    <label class="text-white me-5">
+        <input type="checkbox" name="companies[]" value="{{ $company->id }}" {{ in_array($company->id, old('companies', [])) ? 'checked' : '' }}>
+        {{ $company->name }}
+    </label>
+    @endforeach
 
     <div>
         <x-primary-button>
