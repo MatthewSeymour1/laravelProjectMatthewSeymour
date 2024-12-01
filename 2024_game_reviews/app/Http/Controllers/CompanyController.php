@@ -14,9 +14,27 @@ class CompanyController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $companies = Company::all()->unique('name');
+        $search = $request->input('search');
+        $sort = $request->input('sort', 'name_asc');
+        $query = Company::query();
+
+        //Filters the list of games
+        if ($search) {
+            $query->where('name', 'like', "%$search%");
+        }
+
+        //Sorts the filtered list of games
+        //If there is no filter, than it sorts the entire list of games
+        if ($sort == 'name_asc') {
+            $query->orderBy('name', 'asc');
+        }
+        else if ($sort == 'name_desc') {
+            $query->orderBy('name', 'desc');
+        }
+
+        $companies = $query->get()->unique('name');
         return view('companies.index', compact('companies'));
     }
 
@@ -105,6 +123,9 @@ class CompanyController extends Controller
      */
     public function destroy(Company $company)
     {
-        //
+        //Note: Laravel automatically uses the detach function to remove the relevant entry from the pivot table due to the belongsToMany()
+        //function in the model.
+        $company->delete();
+        return redirect()->route('companies.index')->with('success', 'Company Deleted Successfully');
     }
 }

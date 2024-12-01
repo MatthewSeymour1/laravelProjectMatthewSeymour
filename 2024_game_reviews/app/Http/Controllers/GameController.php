@@ -120,7 +120,8 @@ class GameController extends Controller
         if (auth()->user()->role !== 'admin') {
             return redirect()->route('games.index')->with('error', 'Access Denied.');
         }
-        return view('games.edit', compact('game'));
+        $companies = Company::all();
+        return view('games.edit', compact('game', 'companies'));
     }
 
     /**
@@ -129,12 +130,13 @@ class GameController extends Controller
     public function update(Request $request, Game $game)
     {
         //Validates the form
-        $request->validate([
+        $validated = $request->validate([
             'title' => 'required',
             'description' => 'required|max:500',
             'genre' => 'required|max:100',
             'release_year' => 'required|integer',
             'image' => 'sometimes|image|max:2048',
+            'companies' => 'array|exists:companies,id', //Checks that companies is an array of valid IDs
         ]);
 
 
@@ -156,6 +158,21 @@ class GameController extends Controller
         } 
 
         $game->update($data);
+
+        //This sync() part updates the pivot table, deleting the rows where a company no longer made the game. And adding rows where a new company made the game.
+        if ($request->has('companies')) {
+            $game->companies()->sync($validated['companies']);
+            $currentTimeStamp = Carbon::now();
+
+            //Updates the timestamps for the added pivot table entries.
+            //However this also updates the timestamps for the rows that haven't changed. Still working on a fix.
+            foreach ($validated['companies'] as $companyId) {
+                $game->companies()->updateExistingPivot($companyId, [
+                    'updated_at' => $currentTimeStamp,
+                    'created_at' => $currentTimeStamp,
+                ]);
+            }
+        }
         return redirect()->route('games.index')->with('success', 'Game Updated Successfully');
     }
 

@@ -15,6 +15,7 @@
                         :action="route('games.update', $game)"
                         :method="'PATCH'"
                         :game="$game"
+                        :companies="$companies"
                     />
 
                 </div>

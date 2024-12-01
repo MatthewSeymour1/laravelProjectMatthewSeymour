@@ -13,10 +13,12 @@
         <h4 class="text-lg font-bold">Notable titles from {{ $name }}:</h4>
         <div class="container grid grid-cols-2 mb-5 gap-4">
                     @foreach ($company->games as $game)
-                        <x-game-card
-                            :title="$game->title"
-                            :image="$game->image"
-                        />
+                        <a href="{{ route('games.show', $game) }}">
+                            <x-game-card
+                                :title="$game->title"
+                                :image="$game->image"
+                            />
+                        </a>
                     @endforeach
         </div>
     @endif

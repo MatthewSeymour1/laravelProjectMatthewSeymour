@@ -16,7 +16,27 @@
             
     <div class="py-12 bg-gray-700">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <!-- Here is where the sorting part would go. -->
+            <!-- Here is my dropdown and searchbar for sorting the list of games. -->
+            <form action="{{ route('companies.index') }}" method="GET" class=" px-5 flex gap-2 mx-auto mb-3">
+                <input 
+                        type="text"
+                        name="search"
+                        placeholder="Search for a Company"
+                        value="{{ request('search') }}"
+                        class=""
+                >
+                <select name="sort" class="w-full border-gray-300 rounded-md shadow-sm p-2">
+                    <option value="">Sort By None</option>
+                    <option value="name_asc" {{ request('sort') == 'name_asc' ? 'selected' : '' }}>
+                        Name Ascending
+                    </option>
+                    <option value="name_desc" {{ request('sort') == 'name_desc' ? 'selected' : '' }}>
+                        Name Descending
+                    </option>
+                </select>                
+                <button type='submit' class="bg-green-500 hover:bg-red-700 text-gray-600 font-bold py-2 px-4 rounded">Apply</button>
+            </form>
+             
             <!-- Here is a foreach loop that creates a company card for each company in the database. -->
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-white bg-gray-900">

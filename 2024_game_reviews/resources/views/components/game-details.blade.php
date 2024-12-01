@@ -29,13 +29,15 @@
 
 
     @if ($game->companies->isNotEmpty())
-        <h4 class="text-lg font-bold">Notable titles from {{ $title }}:</h4>
+        <h4 class="text-lg font-bold">Companies that made {{ $title }}:</h4>
         <div class="container grid grid-cols-2 mb-5 gap-4">
-                    @foreach ($game->companies as $company)
-                        <x-company-card
-                            :name="$company->name"
-                            :image="$company->image"
-                        />
+                    @foreach ($game->companies->unique('name') as $company)
+                        <a href="{{ route('companies.show', $company) }}">
+                            <x-company-card
+                                :name="$company->name"
+                                :image="$company->image"
+                            />
+                        </a>
                     @endforeach
         </div>
     @endif
