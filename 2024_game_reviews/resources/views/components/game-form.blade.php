@@ -1,4 +1,4 @@
-@props(['action', 'method', 'game' => null, 'companies'])
+@props(['action', 'method', 'game' => null, 'companies', 'relatedCompanies' => []])
 
 <form action="{{ $action }}" method="POST" enctype="multipart/form-data">
     @csrf
@@ -85,7 +85,7 @@
 
     @foreach ($companies as $company)
     <label class="text-white me-5">
-        <input type="checkbox" name="companies[]" value="{{ $company->id }}" {{ in_array($company->id, old('companies', [])) ? 'checked' : '' }}>
+        <input type="checkbox" name="companies[]" value="{{ $company->id }}" {{ in_array($company->id, $relatedCompanies) ? 'checked' : '' }}>
         {{ $company->name }}
     </label>
     @endforeach

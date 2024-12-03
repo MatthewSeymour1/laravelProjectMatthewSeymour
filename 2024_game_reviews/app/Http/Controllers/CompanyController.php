@@ -107,7 +107,12 @@ class CompanyController extends Controller
      */
     public function edit(Company $company)
     {
-        //
+        if (auth()->user()->role !== 'admin') {
+            return redirect()->route('companies.index')->with('error', 'Access Denied.');
+        }
+        $games = Game::all();
+        $relatedGames = $company->games->pluck('id')->toArray();
+        return view('companies.edit', compact('games', 'company', 'relatedGames'));
     }
 
     /**
@@ -115,7 +120,42 @@ class CompanyController extends Controller
      */
     public function update(Request $request, Company $company)
     {
-        //
+        //Validates the form
+        $validated = $request->validate([
+            'name' => 'required',
+            'role' => 'required|in:developer,publisher',
+            'image' => 'sometimes|image|max:2048',
+            'description' => 'nullable|max:500',
+            'games' => 'array',
+            'games.*' => 'exists:games,id',
+        ]);
+        $data = $request->only(['name', 'role', 'image', 'description']);
+
+        if ($request->hasFile('image')) {
+            if ($company->image && file_exists(public_path($company->image))) {
+                unlink(public_path($company->image));
+            }
+            $imageName = time() . '.' . $request->image->extension();
+            $request->file('image')->move(public_path('images/companies'), $imageName);
+            $data['image'] = $imageName;
+        } 
+
+        $company->update($data);
+
+        if ($request->has('games')) {
+            $company->games()->sync($validated['games']);
+            $currentTimeStamp = Carbon::now();
+
+            //Updates the timestamps for the added pivot table entries.
+            //However this also updates the timestamps for the rows that haven't changed. Still working on a fix.
+            foreach ($validated['games'] as $gameId) {
+                $company->games()->updateExistingPivot($gameId, [
+                    'updated_at' => $currentTimeStamp,
+                    'created_at' => $currentTimeStamp,
+                ]);
+            }
+        }
+        return redirect()->route('companies.index')->with('success', 'Company Updated Successfully');
     }
 
     /**

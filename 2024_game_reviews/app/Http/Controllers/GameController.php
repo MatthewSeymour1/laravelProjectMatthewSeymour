@@ -121,7 +121,8 @@ class GameController extends Controller
             return redirect()->route('games.index')->with('error', 'Access Denied.');
         }
         $companies = Company::all();
-        return view('games.edit', compact('game', 'companies'));
+        $relatedCompanies = $game->companies->pluck('id')->toArray();
+        return view('games.edit', compact('game', 'companies', 'relatedCompanies'));
     }
 
     /**
@@ -136,7 +137,7 @@ class GameController extends Controller
             'genre' => 'required|max:100',
             'release_year' => 'required|integer',
             'image' => 'sometimes|image|max:2048',
-            'companies' => 'array|exists:companies,id', //Checks that companies is an array of valid IDs
+            'companies' => 'exists:companies,id', //Checks that companies is an array of valid IDs
         ]);
 
 
