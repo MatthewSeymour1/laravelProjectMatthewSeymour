@@ -160,7 +160,11 @@ class GameController extends Controller
 
         $game->update($data);
 
-        //This sync() part updates the pivot table, deleting the rows where a company no longer made the game. And adding rows where a new company made the game.
+        //I just noticed an error here, with this code, the pivot table is only synced if there are companies associated as the form is being
+        // submitted. Which leaves an option where if the user takes away all associations, leaving none of the checkboxes checked, then
+        // it will not sync, and the original companies will still be associated with the game.
+        //This sync() part updates the pivot table, deleting the rows where a company no longer made the game. And adding rows where a new company
+        // made the game.
         if ($request->has('companies')) {
             $game->companies()->sync($validated['companies']);
             $currentTimeStamp = Carbon::now();

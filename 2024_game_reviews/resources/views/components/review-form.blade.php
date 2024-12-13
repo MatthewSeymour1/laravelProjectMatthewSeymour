@@ -36,6 +36,5 @@
     <x-primary-button>
         {{ isset($review) ? 'Update Review' : 'Save Review' }}
     </x-primary-button>
-    <!-- Cancel button I would need a book object to return to the books show view, I don't have it here. -->
 
 </form>

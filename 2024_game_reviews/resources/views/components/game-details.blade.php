@@ -11,22 +11,6 @@
     <h3 class="text-white font-semibold mb-2" style="font-size: 2rem;">Description</h3>
     <p class="text-white leading-relaxed mb-3">{!! $description !!}</p>
 
-        <!-- If there are no publishers, say that, else show publishers. Same for developers." -->
-    <!-- @if ($publishers === $developers)
-        <p class="text-gray-300 text-sm italic mb-4">Published and Developered By: {{ $publishers }}</p>
-    @else
-        @if (!$publishers)
-            <p class="text-gray-300 text-sm italic mb-4">Publishers: No publishers available for this game</p>
-        @else
-            <p class="text-gray-300 text-sm italic mb-4">Publishers: {{ $publishers }}</p>
-        @endif
-        @if (!$developers)
-            <p class="text-gray-300 text-sm italic mb-4">No developers available for this game</p>
-        @else
-            <p class="text-gray-300 text-sm italic mb-4">Developers: {{ $developers }}</p>
-        @endif
-    @endif -->
-
 
     @if ($game->companies->isNotEmpty())
         <h4 class="text-lg font-bold">Companies that made {{ $title }}:</h4>

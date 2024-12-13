@@ -62,8 +62,7 @@ class ReviewController extends Controller
         if (auth()->user()->id !== $review->user_id && auth()->user()->role !== 'admin') {
             return redirect()->route('games.index')->with('error', 'Access Denied.');
         }
-
-        // I am passing the game and the review object to the view, as they are both needed.
+        
         return view('reviews.edit', compact('review'));
     }
 
